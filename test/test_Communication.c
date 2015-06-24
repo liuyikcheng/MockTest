@@ -49,6 +49,22 @@ void test_read_given_xxx_should_xxxx(){
   readBit(IO_PIN);
 }
 
+/**
+ *
+ *  
+ *                |----------------|                                      |---------------|
+ *                |   PIC18        |                    cmd = 0xCD        |    External   |
+ *                |                |              ------------------->    |     Device    |
+ *                |                |                address = 0xDEAD      |               |
+ *                |                |              ------------------->    |               |
+ *                |                |                  data = 0xCE         |               |
+ *                |                |              ------------------->    |               |
+ *                |                |                                      |               |
+ *                |----------------|                                      |---------------|
+ *                  
+ *
+ *
+ */
 void test_writeData_given_0xCD_and_address_0xDEAD_and_data_0xC0_should_sent_out_0xCDDEADC0(void){
   setPinToOutput_Expect(IO_PIN);
   setPinHigh_Expect(CLK_PIN);
@@ -154,8 +170,27 @@ void test_writeData_given_0xCD_and_address_0xDEAD_and_data_0xC0_should_sent_out_
   writeData(0xCD, 0xDEAD, 0xC0);
 }
 
+
+
+/**
+ *
+ *  
+ *                |----------------|                                      |---------------|
+ *                |   PIC18        |                    cmd = 0xAB        |    External   |
+ *                |                |              ------------------->    |     Device    |
+ *                |                |                address = 0xFACE      |               |
+ *                |                |              ------------------->    |               |
+ *                |                |                                      |               |
+ *                |                |              <-------------------    |               |
+ *                |                |                     data = 0xBE      |               |
+ *                |----------------|                                      |---------------|
+ *                  
+ *
+ *
+ */
+
 void test_readData_given_0xAB_and_addr_0xFACE_should_sent_0xABFACE_and_turnaround_and_receive_0xBE(void){
-  setPinToOutput_Expect(IO_PIN);//
+  setPinToOutput_Expect(IO_PIN);
   setPinHigh_Expect(CLK_PIN);
   setPinLow_Expect(CLK_PIN);
   

@@ -63,32 +63,32 @@ void writeData(uint8_t cmd, uint16_t address, uint8_t data){
   
   // send data
    for(i=0 ; i<8 ; i++){
-    shifter = data & 0x01;
+    shifter = (data >> i) & 1;
+	// printf("[%d]\n", shifter);
     if(shifter)
       sendBitHigh(IO_PIN);
     else
       sendBitLow(IO_PIN);
-    data = data >> 1;
   }
+  
+
   
   // send address
   for(i=0 ; i<16 ; i++){
-    shifter = address & 0x0001;
+    shifter = (address >> i) & 1;
     if(shifter)
       sendBitHigh(IO_PIN);
     else
       sendBitLow(IO_PIN);
-    address = address >> 1;
   }
   
   // sent cmd
   for(i=0 ; i<8 ; i++){
-    shifter = cmd & 0x01;
+    shifter = (cmd >> i) & 1;
     if(shifter)
       sendBitHigh(IO_PIN);
     else
       sendBitLow(IO_PIN);
-      cmd = cmd >> 1;
   }
 
 
@@ -115,30 +115,28 @@ uint8_t readData(uint8_t cmd, uint16_t address){
   
   // send address
   for(i=0 ; i<16 ; i++){
-    shifter = address & 0x0001;
+    shifter = (address >> i) & 1;
     if(shifter)
       sendBitHigh(IO_PIN);
     else
       sendBitLow(IO_PIN);
-    address = address >> 1;
   }
  
   // sent cmd
   for(i=0 ; i<8 ; i++){
-    shifter = cmd & 0x01;
+    shifter = (cmd >> i) & 1;
     if(shifter)
       sendBitHigh(IO_PIN);
     else
       sendBitLow(IO_PIN);
-      cmd = cmd >> 1;
   }
   
   readTurnAroundIO(IO_PIN);
   
   // read data
-  for(i=0 ; i<8 ; i++){
+
+  for(i=0 ; i<8 ; i++)
     data = data|(readBit(IO_PIN) << i);
-  }
   
   return data;
 }

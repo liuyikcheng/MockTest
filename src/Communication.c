@@ -61,6 +61,7 @@ void writeData(uint8_t cmd, uint16_t address, uint8_t data){
   uint8_t shifter;
   writeTurnAroundIO(IO_PIN);
   
+  // send data
    for(i=0 ; i<8 ; i++){
     shifter = data & 0x01;
     if(shifter)
@@ -70,7 +71,7 @@ void writeData(uint8_t cmd, uint16_t address, uint8_t data){
     data = data >> 1;
   }
   
-  
+  // send address
   for(i=0 ; i<16 ; i++){
     shifter = address & 0x0001;
     if(shifter)
@@ -80,6 +81,7 @@ void writeData(uint8_t cmd, uint16_t address, uint8_t data){
     address = address >> 1;
   }
   
+  // sent cmd
   for(i=0 ; i<8 ; i++){
     shifter = cmd & 0x01;
     if(shifter)
@@ -89,7 +91,6 @@ void writeData(uint8_t cmd, uint16_t address, uint8_t data){
       cmd = cmd >> 1;
   }
 
-  // printf("cmd[%d] %d\n",i , shifter);
 
  }
 
@@ -112,6 +113,7 @@ uint8_t readData(uint8_t cmd, uint16_t address){
   uint8_t data;
   writeTurnAroundIO(IO_PIN);
   
+  // send address
   for(i=0 ; i<16 ; i++){
     shifter = address & 0x0001;
     if(shifter)
@@ -121,6 +123,7 @@ uint8_t readData(uint8_t cmd, uint16_t address){
     address = address >> 1;
   }
  
+  // sent cmd
   for(i=0 ; i<8 ; i++){
     shifter = cmd & 0x01;
     if(shifter)
@@ -132,6 +135,7 @@ uint8_t readData(uint8_t cmd, uint16_t address){
   
   readTurnAroundIO(IO_PIN);
   
+  // read data
   for(i=0 ; i<8 ; i++){
     data = data|(readBit(IO_PIN) << i);
   }
